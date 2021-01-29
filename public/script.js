@@ -5,22 +5,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const brush = {
         isActive: false,
         isMoving: false,
-        currentPosition: {x: 0, y: 0},
+        currentPosition: {relX: 0, relY: 0},
         previousPosition: null
     }
 
     const canvas = document.querySelector('#screen');
     const context = canvas.getContext('2d');
-    context.lineWidth = 7;
+    context.lineWidth = 10;
 
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
 
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight*0.75;
+        socket.emit('resize');
+    })
+
     const drawLine = (line) => {
 
         context.beginPath();
-        context.moveTo(line.previousPosition.x, line.previousPosition.y);
-        context.lineTo(line.currentPosition.x, line.currentPosition.y);
+        context.moveTo(line.previousPosition.relX*canvas.width, line.previousPosition.relY*canvas.height);
+        context.lineTo(line.currentPosition.relX*canvas.width, line.currentPosition.relY*canvas.height);
         context.stroke();
     }
 
@@ -34,8 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     canvas.onmousemove = (event) => {
-        brush.currentPosition.x = event.clientX;
-        brush.currentPosition.y = event.clientY;
+        brush.currentPosition.relX = event.clientX/canvas.width;
+        brush.currentPosition.relY = event.clientY/canvas.height;
         brush.isMoving = true;
     }
 
@@ -68,4 +74,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     cicle();    
 
-})
+});

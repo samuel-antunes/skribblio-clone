@@ -34,4 +34,10 @@ io.on('connection', (socket) => {
         io.emit('clear');
     });
 
+    socket.on('resize', () => {
+        history.forEach(line=>{
+        socket.emit('draw', line)
+        });
+    });
+
 });
