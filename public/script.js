@@ -56,6 +56,16 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(cicle, 10);
     }
 
+    const clearButton = document.getElementById("clear-button");
+
+    clearButton.addEventListener('click', () => {
+        socket.emit('clear');
+    });
+
+    socket.on('clear', () => {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+    });
+
     cicle();    
 
 })

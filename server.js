@@ -29,4 +29,9 @@ io.on('connection', (socket) => {
         io.emit('draw', line)
     });
 
+    socket.on('clear', () => {
+        history.length = 0;
+        io.emit('clear');
+    });
+
 });
